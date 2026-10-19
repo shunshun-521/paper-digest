@@ -1,0 +1,115 @@
+{
+  "papers": [
+    {
+      "arxiv_id": "2510.10001",
+      "title": "Steering Vectors for Persona Control in Large Language Models",
+      "abstract": "We extract steering vectors from residual stream activations and add them at inference time. On a persona benchmark the method lifts target-trait accuracy from 61% to 84% while keeping MMLU within 1.2 points of the base model.",
+      "authors": ["A. Chen", "B. Liu"],
+      "published": "2026-10-18T00:00:00Z",
+      "sources": ["alphaxiv_for_you", "alphaxiv_hot"],
+      "for_you_rank": 1,
+      "hot_rank": 2,
+      "hf_upvotes": 18
+    },
+    {
+      "arxiv_id": "2510.10002",
+      "title": "Conformity in Multi-Agent Language Model Societies",
+      "abstract": "We simulate 200 agents debating factual claims. Groups converge to the majority view in 73% of trials even when the majority is wrong, and a single dissenting persona cuts conformity by 19 points.",
+      "authors": ["C. Wang"],
+      "published": "2026-10-18T00:00:00Z",
+      "sources": ["alphaxiv_for_you"],
+      "for_you_rank": 2
+    },
+    {
+      "arxiv_id": "2510.10003",
+      "title": "Long-Horizon Video Diffusion with Temporal Memory",
+      "abstract": "A memory-augmented video diffusion model generates 60-second clips. FVD drops from 312 to 248 on a long-video benchmark, and human raters prefer it in 68% of pairwise comparisons.",
+      "authors": ["D. Zhao"],
+      "published": "2026-10-17T00:00:00Z",
+      "sources": ["alphaxiv_hot", "hf_daily"],
+      "hot_rank": 1,
+      "hf_upvotes": 56
+    },
+    {
+      "arxiv_id": "2510.10004",
+      "title": "Calibration of Pathology Foundation Models",
+      "abstract": "We measure disagreement among three pathology foundation models on whole-slide labels. Expected calibration error falls from 0.14 to 0.07 after temperature scaling on the disagreement score.",
+      "authors": ["E. Sun"],
+      "published": "2026-10-18T00:00:00Z",
+      "sources": ["hf_daily"],
+      "hf_upvotes": 9
+    }
+  ],
+  "scores": {
+    "2510.10001": {"interpretability": 9, "agents": 3, "generative": 0, "theory": 1, "foundation": 4},
+    "2510.10002": {"interpretability": 2, "agents": 9, "generative": 0, "theory": 0, "foundation": 3},
+    "2510.10003": {"interpretability": 0, "agents": 1, "generative": 9, "theory": 0, "foundation": 2},
+    "2510.10004": {"interpretability": 0, "agents": 0, "generative": 0, "theory": 8, "time_science": 7}
+  },
+  "contents": {
+    "2510.10001": "Abstract. Steering vectors lift persona accuracy from 61% to 84%. Introduction. We intervene on residual activations. Method. The vector is the difference of mean activations. Results. Accuracy 84% versus 61%, MMLU drop 1.2 points. Conclusion. The intervention is cheap but persona labels are noisy.",
+    "2510.10002": "Abstract. Conformity reaches 73% and a dissenter cuts it by 19 points. Method. 200 agents debate. Results. 73% conformity. Limitations. The environment is text-only.",
+    "2510.10003": "Abstract. FVD 248 versus 312 and 68% preference on 60-second clips. Method. Temporal memory inside the diffusion backbone. Results. Those two numbers are the headline.",
+    "2510.10004": "Abstract. ECE from 0.14 to 0.07. Method. Temperature scaling on disagreement. Results. ECE 0.07."
+  },
+  "articles": {
+    "2510.10001": {
+      "arxiv_id": "2510.10001",
+      "headline": "激活向量能改模型人设",
+      "lede": "推理时加上引导向量，人设准确率从 61% 升到 84%。",
+      "problem": "直接微调人设成本高，而且容易伤到通用能力。作者想只在推理时轻轻推一把内部表征。",
+      "method": "他们在残差流上取两种人设的激活差，得到一条引导向量，生成时按固定强度加回去。不更新权重。",
+      "results": "目标人设准确率从 61% 升到 84%，MMLU 只比基线低 1.2 分。",
+      "why_it_matters": "说明人设可以被局部化成一条可加减的方向，改起来比再训练便宜。",
+      "limitations": "人设标签本身很吵，换一个评测集这 23 个点的涨幅未必还在。",
+      "figure_caption_zh": "图为引导向量如何加到残差流上的方法总览。",
+      "matched_topics": ["interpretability"]
+    },
+    "2510.10002": {
+      "arxiv_id": "2510.10002",
+      "headline": "多智能体讨论会集体从众",
+      "lede": "200 个智能体里，73% 的辩论会倒向多数派，即使多数派是错的。",
+      "problem": "多智能体系统常被假设能互相纠错，但它们也可能互相强化错误。",
+      "method": "作者让 200 个语言模型智能体围绕事实题多轮发言，并插入一个持不同意见的人设。",
+      "results": "多数派错误时，群体仍在 73% 的试验里趋同；一个反对者把从众比例降低 19 个点。",
+      "why_it_matters": "用智能体模拟社会过程时，从众会把错误放大，而不是平均掉。",
+      "limitations": "环境只有文字，没有利益或记忆，外推到真实组织要谨慎。",
+      "figure_caption_zh": "图为多智能体辩论流程。",
+      "matched_topics": ["agents"]
+    },
+    "2510.10003": {
+      "arxiv_id": "2510.10003",
+      "headline": "一分钟视频不再那么散",
+      "lede": "带时间记忆的视频扩散把 60 秒片段的 FVD 从 312 降到 248。",
+      "problem": "长视频生成很容易前后人设和场景对不上。",
+      "method": "模型在扩散主干旁加了一小段时间记忆，用来记住已经生成的画面。",
+      "results": "60 秒片段上 FVD 从 312 降到 248，人工成对比较里 68% 更偏好这版。",
+      "why_it_matters": "长视频的时间一致性开始有可量化的改进，而不只是演示片段。",
+      "limitations": "评测集偏短镜头拼接，真正的叙事长片还没测。",
+      "figure_caption_zh": "图为时间记忆模块在扩散流程中的位置。",
+      "matched_topics": ["generative"]
+    },
+    "2510.10004": {
+      "arxiv_id": "2510.10004",
+      "headline": "病理模型的分歧能用来校准",
+      "lede": "用模型分歧做温度缩放后，ECE 从 0.14 降到 0.07。",
+      "problem": "病理基础模型给出的概率经常过于自信。",
+      "method": "三个模型对同一张全切片投票，作者用分歧程度做温度缩放。",
+      "results": "期望校准误差从 0.14 降到 0.07。",
+      "why_it_matters": "不重新训练，只利用模型之间的分歧，就能把置信度拉回现实。",
+      "limitations": "只有三个模型、一个标签体系，换数据源未必同样有效。",
+      "figure_caption_zh": "图为分歧分数进入校准的流程。",
+      "matched_topics": ["theory", "time_science"]
+    }
+  },
+  "journals": [
+    {
+      "source": "Nature",
+      "title": "A short note on model evaluation",
+      "url": "https://www.nature.com/articles/example",
+      "summary": "An editorial on how benchmarks drift.",
+      "blurb": "这篇短文提醒，基准一旦被反复针对，分数就不再代表原来的能力。",
+      "topic_scores": {"foundation": 7}
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+topics:
+  - id: foundation
+    name: 基础大模型 & 基础模型底层研究
+    default: false
+    description: >
+      Foundation models and core LLM research: pretraining, scaling laws,
+      architecture, tokenizer, data quality, long-context, reasoning, post-training,
+      RLHF/RL for LLMs, frontier model reports, multimodal base models.
+  - id: interpretability
+    name: 模型可解释性、模型内部机制
+    default: true
+    description: >
+      Mechanistic interpretability, model internals, circuits, features,
+      activation steering, representation engineering, steering vectors,
+      persona vectors, activation patching, probing, attribution,
+      sparse autoencoders, understanding how neural networks compute.
+  - id: generative
+    name: 生成式 AI
+    default: false
+    description: >
+      Generative AI beyond agents: text/image/video/audio generation,
+      diffusion models, GANs, autoregressive generative models,
+      controllable generation, creative AI applications.
+  - id: agents
+    name: AI 智能体 Agent / 自主智能
+    default: true
+    description: >
+      LLM-based agents, autonomous agents, tool use, planning, memory,
+      multi-agent systems, agent social behavior and conformity,
+      agent simulation, computer-use agents, workflow agents.
+  - id: rl
+    name: 强化学习 RL & 序列决策
+    default: false
+    description: >
+      Reinforcement learning, sequential decision making, offline RL,
+      model-based RL, policy optimization, RL for control and games,
+      RL for LLM post-training when framed as decision/control.
+  - id: cv
+    name: 计算机视觉 CV
+    default: false
+    description: >
+      Computer vision: detection, segmentation, recognition, 3D vision,
+      visual representation learning, vision-language models as CV systems,
+      medical imaging when primarily a vision task.
+  - id: speech
+    name: 语音与音频 AI
+    default: false
+    description: >
+      Speech recognition, speech synthesis, audio understanding,
+      music generation, speaker identification, speech-language models,
+      multimodal audio-text systems.
+  - id: time_science
+    name: 时序数据 & 科学 AI
+    default: false
+    description: >
+      Time series forecasting and modeling, scientific machine learning,
+      AI for science, physics/chemistry/biology informed models,
+      climate, materials, computational pathology as scientific AI.
+  - id: systems
+    name: AI 工程、推理部署、系统方向
+    default: false
+    description: >
+      AI systems and engineering: inference serving, quantization,
+      distillation, compilation, KV cache, batching, GPU/TPU efficiency,
+      distributed training, MLOps, deployment and reliability.
+  - id: theory
+    name: 因果推断、统计学习、理论机器学习
+    default: false
+    description: >
+      Causal inference, statistical learning theory, generalization,
+      theoretical machine learning, PAC learning, optimization theory,
+      uncertainty quantification and calibration with a theory focus.
+  - id: robotics
+    name: 机器人 & 具身智能
+    default: false
+    description: >
+      Robotics and embodied AI, robot learning, manipulation,
+      navigation, sim-to-real, vision-language-action models,
+      world models for robots, tactile sensing.

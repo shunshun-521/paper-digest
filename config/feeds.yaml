@@ -1,0 +1,8 @@
+# URL 在运行时逐个请求；不可用的源记录 warning 并跳过，不影响其余栏目。
+journals:
+  - name: Nature
+    url: https://www.nature.com/nature.rss
+  - name: Nature Machine Intelligence
+    url: https://www.nature.com/natmachintell.rss
+  - name: Science
+    url: https://www.science.org/action/showFeed?type=etoc&feed=rss&jc=science

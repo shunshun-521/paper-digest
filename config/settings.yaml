@@ -1,0 +1,27 @@
+timezone: Asia/Shanghai
+papers_per_day: 5            # 邮件里最终推送篇数（3~5）
+candidates_on_page: 12       # 网页版保留的候选数（前端复选框从中筛选）
+journal_items_max: 2         # 期刊栏目最多几篇
+
+llm:
+  base_url: https://api.deepseek.com
+  model: deepseek-flash      # 可改；必须可配置，不要写死
+  api_key_env: DEEPSEEK_API_KEY
+  temperature: 0.3
+  use_vision: true           # 用多模态挑关键图；失败自动退回 caption 判断
+  max_input_chars: 120000    # 喂给模型的正文上限
+
+sources:
+  alphaxiv_for_you: true
+  alphaxiv_hot: true
+  hf_daily: true
+  arxiv_fallback_categories: [cs.CL, cs.LG, cs.CV, cs.AI]
+
+notify:
+  email: true
+  wechat: true
+  wechat_provider: serverchan   # serverchan | pushplus
+
+deploy:
+  target: cloudflare            # cloudflare | github_pages | none
+  site_base_url: ""             # 部署后的网址，用于邮件/微信里的链接

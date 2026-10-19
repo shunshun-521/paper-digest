@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <title>论文日报 {{ day.month }}/{{ day.day }}</title>
+</head>
+<body style="margin:0;padding:0;background:#f4f6f8;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f4f6f8;margin:0;padding:0;">
+    <tr>
+      <td align="center" style="padding:16px 8px;">
+        <table role="presentation" width="680" cellpadding="0" cellspacing="0" style="width:100%;max-width:680px;background:#ffffff;border-radius:12px;">
+          <tr>
+            <td style="padding:28px 28px 8px 28px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Noto Sans SC','Microsoft YaHei',sans-serif;color:#1c2430;">
+              <div style="font-size:13px;letter-spacing:0.08em;color:#5b6b7c;">DAILY PAPER DIGEST</div>
+              <h1 style="margin:8px 0 4px 0;font-size:26px;line-height:1.3;font-weight:700;">论文日报</h1>
+              <div style="font-size:15px;color:#5b6b7c;">{{ day.strftime("%Y年%m月%d日") }} · 今日 {{ papers|length }} 篇</div>
+            </td>
+          </tr>
+          {% for paper in papers %}
+          {% set article = paper.article %}
+          <tr>
+            <td style="padding:8px 28px 20px 28px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Noto Sans SC','Microsoft YaHei',sans-serif;color:#1c2430;">
+              <div style="border-top:1px solid #e6ebf0;padding-top:20px;">
+                <div style="font-size:13px;color:#8a97a6;margin-bottom:6px;">0{{ loop.index }}</div>
+                <h2 style="margin:0 0 8px 0;font-size:22px;line-height:1.35;">{{ article.headline if article else paper.title }}</h2>
+                <p style="margin:0 0 14px 0;font-size:16px;line-height:1.6;color:#3d4b5c;">{{ article.lede if article else "" }}</p>
+                {% if paper.figure and paper.figure.cid %}
+                <img src="cid:{{ paper.figure.cid }}" alt="{{ article.figure_caption_zh if article else paper.figure.caption }}" width="624" style="width:100%;max-width:624px;height:auto;border-radius:8px;display:block;border:1px solid #e6ebf0;">
+                <div style="font-size:13px;color:#5b6b7c;margin:8px 0 14px 0;">{{ article.figure_caption_zh if article else paper.figure.caption }}</div>
+                {% endif %}
+                {% if article %}
+                <p style="margin:0 0 8px 0;font-size:15px;line-height:1.7;"><strong>解决了什么问题。</strong>{{ article.problem }}</p>
+                <p style="margin:0 0 8px 0;font-size:15px;line-height:1.7;"><strong>方法。</strong>{{ article.method }}</p>
+                <p style="margin:0 0 8px 0;font-size:15px;line-height:1.7;"><strong>关键结果。</strong>{{ article.results }}</p>
+                <p style="margin:0 0 8px 0;font-size:15px;line-height:1.7;"><strong>为什么值得看。</strong>{{ article.why_it_matters }}</p>
+                <p style="margin:0 0 12px 0;font-size:15px;line-height:1.7;"><strong>局限 / 存疑。</strong>{{ article.limitations }}</p>
+                {% endif %}
+                <div style="font-size:13px;line-height:1.6;color:#3d4b5c;">
+                  {% for topic_id in paper.matched_topics %}
+                  <span style="display:inline-block;margin:0 6px 6px 0;padding:2px 8px;background:#eef3f8;border-radius:999px;">{{ topic_names.get(topic_id, topic_id) }}</span>
+                  {% endfor %}
+                </div>
+                <div style="font-size:14px;margin-top:8px;">
+                  <a href="https://www.alphaxiv.org/abs/{{ paper.arxiv_id }}" style="color:#145ea8;text-decoration:none;">alphaXiv</a>
+                  &nbsp;·&nbsp;
+                  <a href="https://arxiv.org/abs/{{ paper.arxiv_id }}" style="color:#145ea8;text-decoration:none;">arXiv</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+          {% if journals %}
+          <tr>
+            <td style="padding:8px 28px 12px 28px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Noto Sans SC','Microsoft YaHei',sans-serif;color:#1c2430;">
+              <div style="border-top:1px solid #e6ebf0;padding-top:18px;">
+                <h2 style="margin:0 0 10px 0;font-size:18px;">期刊</h2>
+                {% for note in journals %}
+                <p style="margin:0 0 10px 0;font-size:15px;line-height:1.6;">
+                  <strong>{{ note.source }}</strong> ·
+                  {% if note.url %}<a href="{{ note.url }}" style="color:#145ea8;text-decoration:none;">{{ note.title }}</a>{% else %}{{ note.title }}{% endif %}
+                  <br>{{ note.blurb or note.summary }}
+                </p>
+                {% endfor %}
+              </div>
+            </td>
+          </tr>
+          {% endif %}
+          <tr>
+            <td style="padding:8px 28px 28px 28px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Noto Sans SC','Microsoft YaHei',sans-serif;color:#5b6b7c;font-size:13px;line-height:1.6;">
+              <div style="border-top:1px solid #e6ebf0;padding-top:14px;">
+                今日数据源状态：{{ status_line }}
+                {% if site_url %}
+                <br><a href="{{ site_url }}/{{ day.isoformat() }}/" style="color:#145ea8;">网页版</a>
+                {% endif %}
+              </div>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

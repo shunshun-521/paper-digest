@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>论文日报归档</title>
+  <style>
+    :root { color-scheme: light dark; --bg:#f5f7fa; --text:#1c2430; --muted:#5c6b7a; --card:#fff; --line:#e4e9ef; }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg:#12161c; --text:#e8eef5; --muted:#a8b3c0; --card:#1c232c; --line:#2c3642; }
+    }
+    body {
+      margin: 0; background: var(--bg); color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Noto Sans SC", "Microsoft YaHei", sans-serif;
+    }
+    main { width: min(720px, calc(100% - 28px)); margin: 0 auto; padding: 32px 0 48px; }
+    a { color: inherit; }
+    ul { list-style: none; padding: 0; }
+    li { background: var(--card); border: 1px solid var(--line); border-radius: 10px; margin: 0 0 10px; }
+    li a { display: block; padding: 14px 16px; text-decoration: none; }
+    .muted { color: var(--muted); }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="muted">DAILY PAPER DIGEST</p>
+    <h1>论文日报归档</h1>
+    {% if days %}
+    <ul>
+      {% for day in days %}
+      <li><a href="{{ day }}/index.html">{{ day }}</a></li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p>还没有归档。</p>
+    {% endif %}
+  </main>
+</body>
+</html>
