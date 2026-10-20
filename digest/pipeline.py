@@ -107,7 +107,9 @@ def _run_dry(root, settings, topics, day, destination):
     apply_scores(pool, topics, day)
     default_ids = [topic.id for topic in topics if topic.default]
     email_papers = select_email_papers(pool, settings.papers_per_day, default_ids)
-    page_papers = select_page_papers(pool, email_papers, settings.candidates_on_page)
+    page_papers = select_page_papers(
+        pool, email_papers, settings.candidates_on_page, [topic.id for topic in topics]
+    )
 
     def html_getter(url: str) -> str:
         arxiv_id = url.rstrip("/").split("/")[-1]
@@ -268,7 +270,9 @@ async def _run_live(root, settings, topics, feeds, day, now, destination):
         apply_scores(pool, topics, day)
         default_ids = [topic.id for topic in topics if topic.default]
         email_papers = select_email_papers(pool, settings.papers_per_day, default_ids)
-        page_papers = select_page_papers(pool, email_papers, settings.candidates_on_page)
+        page_papers = select_page_papers(
+            pool, email_papers, settings.candidates_on_page, [topic.id for topic in topics]
+        )
 
         for paper in page_papers:
             alphaxiv_text = None

@@ -1,6 +1,6 @@
 timezone: Asia/Shanghai
-papers_per_day: 5            # 邮件里最终推送篇数（3~5）
-candidates_on_page: 12       # 网页版保留的候选数（前端复选框从中筛选）
+papers_per_day: 10           # 最终推送篇数
+candidates_on_page: 24       # 网页版保留的候选数（前端复选框从中筛选）
 journal_items_max: 2         # 期刊栏目最多几篇
 
 llm:

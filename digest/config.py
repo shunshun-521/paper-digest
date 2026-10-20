@@ -44,8 +44,8 @@ class DeploySettings(BaseModel):
 
 class Settings(BaseModel):
     timezone: str = "Asia/Shanghai"
-    papers_per_day: int = 5
-    candidates_on_page: int = 12
+    papers_per_day: int = 10
+    candidates_on_page: int = 24
     journal_items_max: int = 2
     llm: LLMSettings = Field(default_factory=LLMSettings)
     sources: SourceSettings = Field(default_factory=SourceSettings)

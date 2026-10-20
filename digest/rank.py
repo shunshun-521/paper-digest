@@ -81,21 +81,76 @@ def apply_scores(
         paper.web_score = 0.65 * web_rel + 0.25 * signal + 0.10 * recency
 
 
-def select_email_papers(papers: list[Paper], limit: int, default_ids: list[str]) -> list[Paper]:
-    def matched(paper: Paper) -> bool:
-        return any(topic_id in paper.matched_topics for topic_id in default_ids)
-
-    ranked = sorted(papers, key=lambda paper: paper.email_score, reverse=True)
-    preferred = [paper for paper in ranked if matched(paper)]
-    others = [paper for paper in ranked if paper not in preferred]
-    return (preferred + others)[:limit]
-
-
-def select_page_papers(papers: list[Paper], email_papers: list[Paper], limit: int) -> list[Paper]:
-    ranked = sorted(papers, key=lambda paper: paper.web_score, reverse=True)
+def _round_robin_by_topics(
+    papers: list[Paper],
+    topic_ids: list[str],
+    limit: int,
+    *,
+    score_attr: str,
+) -> list[Paper]:
+    """Pick papers by rotating default topics so one theme cannot fill every slot."""
+    ranked = sorted(papers, key=lambda paper: getattr(paper, score_attr), reverse=True)
+    queues: dict[str, list[Paper]] = {}
+    for topic_id in topic_ids:
+        queues[topic_id] = sorted(
+            [
+                paper
+                for paper in papers
+                if paper.topic_scores.get(topic_id, 0.0) >= 6
+            ],
+            key=lambda paper: (
+                paper.topic_scores.get(topic_id, 0.0),
+                getattr(paper, score_attr),
+            ),
+            reverse=True,
+        )
     chosen: list[Paper] = []
     seen: set[str] = set()
-    for paper in email_papers + ranked:
+    progressed = True
+    while len(chosen) < limit and progressed:
+        progressed = False
+        for topic_id in topic_ids:
+            if len(chosen) >= limit:
+                break
+            for paper in queues.get(topic_id, []):
+                if paper.arxiv_id in seen:
+                    continue
+                chosen.append(paper)
+                seen.add(paper.arxiv_id)
+                progressed = True
+                break
+    for paper in ranked:
+        if len(chosen) >= limit:
+            break
+        if paper.arxiv_id not in seen:
+            chosen.append(paper)
+            seen.add(paper.arxiv_id)
+    return chosen
+
+
+def select_email_papers(papers: list[Paper], limit: int, default_ids: list[str]) -> list[Paper]:
+    if not default_ids:
+        return sorted(papers, key=lambda paper: paper.email_score, reverse=True)[:limit]
+    return _round_robin_by_topics(papers, default_ids, limit, score_attr="email_score")
+
+
+def select_page_papers(
+    papers: list[Paper],
+    email_papers: list[Paper],
+    limit: int,
+    topic_ids: list[str] | None = None,
+) -> list[Paper]:
+    seed = list(email_papers)
+    leftover = [paper for paper in papers if paper.arxiv_id not in {item.arxiv_id for item in seed}]
+    if topic_ids:
+        extra = _round_robin_by_topics(leftover, topic_ids, max(0, limit - len(seed)), score_attr="web_score")
+        merged = seed + extra
+    else:
+        ranked = sorted(leftover, key=lambda paper: paper.web_score, reverse=True)
+        merged = seed + ranked
+    chosen: list[Paper] = []
+    seen: set[str] = set()
+    for paper in merged:
         if paper.arxiv_id in seen:
             continue
         chosen.append(paper)
