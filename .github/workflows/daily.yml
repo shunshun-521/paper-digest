@@ -56,17 +56,22 @@ jobs:
 
       - name: Check Cloudflare secrets
         id: cf
-        if: github.event_name != 'workflow_dispatch' || inputs.dry_run != true
+        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.dry_run) }}
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           CF_PAGES_PROJECT: ${{ secrets.CF_PAGES_PROJECT }}
         run: |
+          echo "CLOUDFLARE_API_TOKEN set: $([ -n "$CLOUDFLARE_API_TOKEN" ] && echo yes || echo NO)"
+          echo "CLOUDFLARE_ACCOUNT_ID set: $([ -n "$CLOUDFLARE_ACCOUNT_ID" ] && echo yes || echo NO)"
+          echo "CF_PAGES_PROJECT set: $([ -n "$CF_PAGES_PROJECT" ] && echo yes || echo NO)"
+          echo "CF_PAGES_PROJECT value: ${CF_PAGES_PROJECT:-<empty>}"
           if [ -n "$CLOUDFLARE_API_TOKEN" ] && [ -n "$CLOUDFLARE_ACCOUNT_ID" ] && [ -n "$CF_PAGES_PROJECT" ]; then
             echo "enabled=true" >> "$GITHUB_OUTPUT"
+            echo "Cloudflare deploy will run"
           else
             echo "enabled=false" >> "$GITHUB_OUTPUT"
-            echo "Cloudflare secrets incomplete, skip deploy"
+            echo "::warning::Cloudflare secrets incomplete, skip deploy. Need CLOUDFLARE_API_TOKEN, CLOUDFLARE_ACCOUNT_ID, CF_PAGES_PROJECT"
           fi
 
       - name: Deploy Cloudflare Pages
@@ -77,8 +82,12 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: pages deploy site --project-name=${{ secrets.CF_PAGES_PROJECT }}
 
+      - name: Cloudflare deploy skipped notice
+        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.dry_run) && steps.cf.outputs.enabled != 'true' }}
+        run: echo "::warning::Deploy Cloudflare Pages was skipped. Open the Check Cloudflare secrets step above."
+
       - name: Commit archive and site
-        if: github.event_name != 'workflow_dispatch' || inputs.dry_run != true
+        if: ${{ !(github.event_name == 'workflow_dispatch' && inputs.dry_run) }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
