@@ -18,7 +18,7 @@ sources:
   arxiv_fallback_categories: [cs.CL, cs.LG, cs.CV, cs.AI]
 
 notify:
-  email: true
+  email: false                  # 未配置 SMTP 时保持 false；以后要邮件再改 true
   wechat: true
   wechat_provider: serverchan   # serverchan | pushplus
 

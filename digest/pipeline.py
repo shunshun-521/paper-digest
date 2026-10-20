@@ -74,7 +74,7 @@ def run(
                 destination=destination,
             )
         )
-    logger.info("status: %s", status.status_line)
+    logger.info("今日数据源状态：%s", status.status_line)
     logger.info("exit %s, papers %s", code, len(email_papers))
     return code
 
@@ -531,14 +531,26 @@ def _notify(settings: Settings, day: date, email_papers: list[Paper], status: Ru
     if not settings.notify.wechat:
         status.skipped.append("wechat")
         return
-    lines = []
+    lines: list[str] = []
     for index, paper in enumerate(email_papers, start=1):
         headline = paper.article.headline if paper.article else paper.title
-        lines.append(f"{index}. {headline}")
-    if settings.deploy.site_base_url:
+        lines.append(f"{index}. **{headline}**")
+        if paper.article and paper.article.lede:
+            lines.append(f"   {paper.article.lede}")
+        lines.append(
+            f"   [arXiv](https://arxiv.org/abs/{paper.arxiv_id}) · "
+            f"[alphaXiv](https://www.alphaxiv.org/abs/{paper.arxiv_id})"
+        )
         lines.append("")
-        lines.append(settings.deploy.site_base_url.rstrip("/") + f"/{day.isoformat()}/")
-    lines.append(status.status_line)
+    site_base = (settings.deploy.site_base_url or "").rstrip("/")
+    if site_base:
+        page_url = f"{site_base}/{day.isoformat()}/"
+        lines.append(f"网页版（含图文）：{page_url}")
+        lines.append("")
+    else:
+        lines.append("网页版链接未配置：请在 Cloudflare Pages 复制网址后填入 config/settings.yaml 的 deploy.site_base_url")
+        lines.append("")
+    lines.append(f"今日数据源状态：{status.status_line}")
     title = f"论文日报 {day.month}/{day.day}"
     if email_papers and email_papers[0].article:
         title = f"{title} · {email_papers[0].article.headline}"

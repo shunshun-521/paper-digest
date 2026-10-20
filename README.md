@@ -142,8 +142,8 @@ Secret 名：`CLOUDFLARE_API_TOKEN`。
 1. 打开仓库的 **Actions**。
 2. 左侧选 **Daily Paper Digest**。
 3. 右侧 **Run workflow**。`dry_run` 留空（false）才会真的发信。
-4. 点进这次运行，展开 **Run digest** 看日志。底部有一行「今日数据源状态」。
-5. 成功后查收邮件（含图片）、微信标题列表，以及 Cloudflare Pages 上的网页。
+4. 点进这次运行，展开 **Run digest** 看日志。在日志搜索框输入 `今日数据源状态` 或 `exit`。
+5. 成功后：微信是标题 + 论文链接提醒；完整图文在 Cloudflare Pages 网页。邮件需先配置 SMTP 并把 `notify.email` 设为 `true`。
 
 定时规则已经写在工作流里：北京时间周一到周五 12:30（UTC 04:30）。
 
