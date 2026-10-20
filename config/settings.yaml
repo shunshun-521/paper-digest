@@ -24,4 +24,4 @@ notify:
 
 deploy:
   target: cloudflare            # cloudflare | github_pages | none
-  site_base_url: ""             # 部署后的网址，用于邮件/微信里的链接
+  site_base_url: "https://paper-digest.pages.dev"  # 用稳定域名；带哈希的预览地址每次部署会变
