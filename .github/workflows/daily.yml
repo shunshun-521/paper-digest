@@ -2,7 +2,8 @@ name: Daily Paper Digest
 
 on:
   schedule:
-    - cron: "30 4 * * 1-5"
+    # 北京时间每天 08:30 = UTC 00:30
+    - cron: "30 0 * * *"
   workflow_dispatch:
     inputs:
       dry_run:
